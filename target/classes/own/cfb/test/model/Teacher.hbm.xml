@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="own.cfb.test.model.Teacher">
+        <id name="teaCode">
+            <generator class="native"></generator>
+        </id>
+        <property name="teaName"></property>
+        <set name="students" cascade="all">
+            <key column="teaCode" not-null="true"></key>
+            <one-to-many class="own.cfb.test.model.Student"></one-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

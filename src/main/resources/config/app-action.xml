@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <import resource="app-service.xml"></import>
+    <!--
+        由Spring实例化Action对象的配置
+    -->
+    <bean id="baseAction" name="baseAction" class="own.cfb.common.action.BaseAction" scope="prototype">
+        <property name="baseService" ref="baseUservice"></property>
+    </bean>
+    <bean id="userAction" name="userAction" class="own.cfb.user.action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"></property>
+    </bean>
+</beans>

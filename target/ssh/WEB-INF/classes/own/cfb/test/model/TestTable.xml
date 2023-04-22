@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="own.cfb.test.model.TestTable" >
+        <id name="testId" type="java.lang.Integer">
+            <generator class="native"></generator>
+        </id>
+        <version name="version" type="java.lang.Integer"></version>
+        <property name="testName"  length="32" type="java.lang.String"></property>
+        <property name="createTime">
+            <column name="createTime" default="now()" not-null="true" sql-type="timestamp"></column>
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="status" default="0" not-null="true"></column>
+        </property>
+
+    </class>
+</hibernate-mapping>

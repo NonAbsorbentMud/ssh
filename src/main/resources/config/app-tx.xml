@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--引入jdbc属性配置文件-->
+    <context:property-placeholder location="classpath:database.properties"/>
+    <!--c3p0连接池配置-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+    <!--sessionFactory配置 可以省略hibernate.cfg.xml配置文件-->
+    <!--使用jpa注解形式的pojo对象，而去掉*.hbm.xml的Hibernate映射文件-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 设置spring去哪个包中查找相应的实体类 -->
+<!--        <property name="packagesToScan">-->
+<!--            <list>-->
+<!--                <value>own.cfb.*.model</value>-->
+<!--            </list>-->
+<!--        </property>-->
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!--是否自动创建表结构-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--方言-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+            </props>
+        </property>
+        <property name="mappingLocations" value="classpath:config/hbm/*.hbm.xml"></property>
+<!--        <property name="mappingDirectoryLocations">-->
+<!--            <list>-->
+<!--                <value>classpath:config/hbm/</value>-->
+<!--            </list>-->
+<!--        </property>-->
+    </bean>
+    <!--事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="save*" propagation="REQUIRED"/>
+            <tx:method name="insert*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+            <tx:method name="delete*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="select*" propagation="REQUIRED"/>
+            <tx:method name="get*" propagation="REQUIRED"/>
+            <tx:method name="find*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    <aop:config>
+        <aop:pointcut id="txPc" expression="execution(* own.cfb.*.*.*.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPc"></aop:advisor>
+    </aop:config>
+</beans>

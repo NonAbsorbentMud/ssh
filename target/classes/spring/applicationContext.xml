@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <bean id="beanOne" name="bean_one" class="own.cfb.test.domain.BeanOne">
+        <constructor-arg index="0" value="888"></constructor-arg>
+        <constructor-arg index="1" value="zz"></constructor-arg>
+    </bean>
+    <bean id="beanTwo" name="bean_two" class="own.cfb.test.domain.BeanTwo"
+          destroy-method="destroy" init-method="init">
+        <property name="id" value="222"></property>
+        <property name="name" value="cfb"></property>
+        <property name="beanOne" ref="beanOne"></property>
+        <property name="strList">
+            <list>
+                <value>111</value>
+                <value>222</value>
+            </list>
+        </property>
+        <property name="strSet">
+            <set>
+                <value>999</value>
+                <value>888</value>
+            </set>
+        </property>
+        <property name="map">
+            <map>
+                <entry key="0" value="555"></entry>
+                <entry key="1" value="666"></entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="username">root</prop>
+                <prop key="password">mysql</prop>
+            </props>
+        </property>
+    </bean>
+    <bean id="xmlAdvice" class="own.cfb.test.aop.XmlAdvice"></bean>
+    <bean id="annotateAdvice" class="own.cfb.test.aop.AnnotateAdvice"></bean>
+    <aop:aspectj-autoproxy proxy-target-class="true"></aop:aspectj-autoproxy>
+    <aop:config expose-proxy="false" proxy-target-class="false">
+        <aop:pointcut id="advicepoint" expression="execution(* own.cfb.test.domain.BeanOne.printOne(..))" ></aop:pointcut>
+        <aop:aspect order="1" id="testadvice" ref="xmlAdvice">
+            <aop:before method="before" pointcut-ref="advicepoint"></aop:before>
+            <aop:after method="after" pointcut-ref="advicepoint"></aop:after>
+            <aop:around method="arround" pointcut-ref="advicepoint"></aop:around>
+            <aop:after-returning method="afterReturning" pointcut-ref="advicepoint"></aop:after-returning>
+            <aop:after-throwing method="afterException" pointcut-ref="advicepoint"></aop:after-throwing>
+        </aop:aspect>
+    </aop:config>
+    <context:component-scan base-package="own.cfb"/>
+    <!-- 数据源 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://localhost:3306/test"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="mysql"></property>
+    </bean>
+    <bean id="testDao" class="own.cfb.test.dao.impl.TestDaoImpl">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <bean id="testService" class="own.cfb.test.service.impl.TestServiceImpl">
+        <property name="testDao" ref="testDao"></property>
+    </bean>
+</beans>

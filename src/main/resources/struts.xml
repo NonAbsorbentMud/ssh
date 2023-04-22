@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+  <!--
+    开启!动态访问
+  -->
+  <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+  <!--
+    指定struts2是否以开发模式运行，默认为fals
+  <constant name="struts.devMode" value="true"></constant>
+  -->
+  <!--
+    struts.xml文件改动时，是否重新加载，默认为false
+  -->
+  <constant name="struts.configuration.xml.reload" value="true"></constant>
+  <!--
+  请求参数的编码方式
+  -->
+  <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+  <!--
+    请求的后缀类型，多个用逗号隔开
+  -->
+  <constant name="struts.action.extension" value="action,,do"></constant>
+  <!--
+    spring负责装配action依赖属性
+  -->
+  <constant name="struts.objectFactory.spring.autoWire" value="name"></constant>
+  <!--
+    将action创建交给spring容器
+  -->
+  <constant name="struts.objectFactory" value="spring"></constant>
+
+  <include file="config/struts/*"></include>
+
+</struts>

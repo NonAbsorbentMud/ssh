@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+    <package name="user" namespace="/user" extends="struts-default">
+        <global-results>
+            <result name="error">
+                <param name="location">/WEB-INF/jsp/error.jsp</param>
+            </result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"></exception-mapping>
+        </global-exception-mappings>
+        <!--
+            action由Spring创建的配置
+        <action name="*Action" class="userAction" method="{1}">
+            action由Struts创建的配置，本质是struts2-spring-plugin插件创建，业务类也是由它自动装配进入的
+        <action name="*Action" class="own.cfb.user.action.UserAction" method="{1}">
+        -->
+        <action name="*Action" class="userAction" method="{1}">
+            <result name="main" type="dispatcher">
+                <param name="location">/WEB-INF/jsp/main.jsp</param>
+            </result>
+            <result name="warn" type="redirect">
+                <param name="location">/index.jsp</param>
+            </result>
+        </action>
+    </package>
+</struts>

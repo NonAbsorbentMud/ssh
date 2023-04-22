@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="own.cfb.user.model.Users" table="users">
+        <id name="userId">
+            <generator class="native"></generator>
+        </id>
+        <property name="userName" not-null="true" type="java.lang.String"></property>
+        <property name="email" not-null="false" type="java.lang.String" unique="true"></property>
+        <property name="passWord" not-null="true" type="java.lang.String"></property>
+        <property name="phone" not-null="true" type="java.lang.String" unique="true"></property>
+        <property name="idCard" not-null="true" type="java.lang.String" unique="true"></property>
+        <property name="qq" not-null="false" type="java.lang.String" unique="true"></property>
+        <property name="wechatId" not-null="false" type="java.lang.String" unique="true"></property>
+        <property name="status" not-null="true" type="java.lang.Integer">
+            <column name="status" sql-type="int" default="0"></column>
+        </property>
+        <property name="createTime" not-null="true" type="java.util.Date">
+            <column name="createtime" sql-type="timestamp" default="now()"></column>
+        </property>
+        <property name="updateTime" not-null="false" type="java.util.Date" update="true">
+            <column name="updatetime" sql-type="timestamp"></column>
+        </property>
+    </class>
+</hibernate-mapping>

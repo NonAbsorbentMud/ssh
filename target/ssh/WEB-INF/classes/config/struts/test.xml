@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+    <package name="test" namespace="/test" extends="struts-default,json-default">
+        <global-results>
+            <result>/WEB-INF/jsp/test/result.jsp</result>
+        </global-results>
+        <action name="oneAction" class="own.cfb.test.action.CreateActionOne">
+            <result name="one">/WEB-INF/jsp/test/result.jsp</result>
+        </action>
+        <action name="twoAction" class="own.cfb.test.action.CreateActionTwo">
+            <result name="execute">/WEB-INF/jsp/test/result.jsp</result>
+        </action>
+        <action name="*Action" class="own.cfb.test.action.CreateActionThree" method="{1}">
+            <result name="three">/WEB-INF/jsp/test/result.jsp</result>
+        </action>
+        <action name="paramAction" class="own.cfb.test.action.ParamAction" method="param">
+            <result name="param" type="dispatcher">
+                <param name="location">/WEB-INF/jsp/test/result.jsp</param>
+            </result>
+        </action>
+        <action name="Ret_*" class="own.cfb.test.action.ReturnAction" method="{1}">
+            <result name="str">
+                <param name="location">/WEB-INF/jsp/test/result.jsp</param>
+            </result>
+            <result name="retJson">/WEB-INF/jsp/test/result.jsp</result>
+            <result name="retJsonData" type="json">
+                <param name="root">jsonResult</param>
+            </result>
+        </action>
+        <action name="navigate*" class="own.cfb.test.action.NavigateAction" method="{1}">
+            <result name="toDispatcher" type="dispatcher">
+                <param name="location">/WEB-INF/jsp/test/result.jsp</param>
+            </result>
+            <result name="toRedirect" type="redirect">
+                <param name="location">/index.jsp</param>
+            </result>
+            <result name="toChain" type="chain">
+                <param name="actionName">navigatetoDispatcher</param>
+                <param name="namespace">/test</param>
+                <param name="parse">true</param>
+                <param name="fieldParam">${actionParam}</param>
+            </result>
+            <result name="toRedirectAct" type="redirectAction">
+                <param name="actionName">navigatetoDispatcher</param>
+                <param name="namespace">/test</param>
+                <param name="parse">true</param>
+                <param name="fieldParam">${actionParam}</param>
+            </result>
+        </action>
+    </package>
+</struts>

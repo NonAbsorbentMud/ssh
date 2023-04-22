@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="own.cfb.test.model.Student">
+        <id name="stuCode">
+            <generator class="native"></generator>
+        </id>
+        <property name="stuName"></property>
+        <!-- 基于某一方的主键为外键的一对一关联映射 -->
+        <one-to-one name="card" cascade="all"></one-to-one>
+        <!-- 基于某一方建立外键字段的一对一关联映射
+        <one-to-one name="card" class="own.cfb.test.model.Card" property-ref="student" cascade="all"></one-to-one>
+        -->
+        <many-to-one name="teacher" class="own.cfb.test.model.Teacher" column="teaCode" cascade="all" insert="false" update="false"></many-to-one>
+    </class>
+
+
+
+
+</hibernate-mapping>
